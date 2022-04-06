@@ -4,7 +4,7 @@ import net.seehope.pojo.*;
 import  net.seehope.pojo.bo.*;
 
 import java.util.List;
-
+import java.util.Map;
 
 
 public interface UserService {
@@ -68,6 +68,9 @@ public interface UserService {
 
     // 发布帖子评论
     void postComment(Comment comment) throws Exception;
+
+    // 得到学生就业数据
+    Map getJobInformation();
 
 
 

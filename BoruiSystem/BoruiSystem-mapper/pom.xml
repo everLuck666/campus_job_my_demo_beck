@@ -31,10 +31,22 @@
                 </configuration>
             </plugin>
         </plugins>
+    </build>
 
+<!--    <build>-->
+<!--        <resources>-->
+<!--            &lt;!&ndash;指定xml文件位置&ndash;&gt;-->
+<!--            <resource>-->
+<!--                <directory>src/main/java</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                </includes>-->
+<!--                &lt;!&ndash;这里写成true会造成编译注释错误&ndash;&gt;-->
+<!--                <filtering>false</filtering>-->
+<!--            </resource>-->
+<!--        </resources>-->
+<!--    </build>-->
 
-
-</build>
 
 
 

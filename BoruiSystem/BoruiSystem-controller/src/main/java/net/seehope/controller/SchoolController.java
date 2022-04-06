@@ -38,6 +38,13 @@ public class SchoolController {
         return RestfulJson.isOk("成功");
     }
 
+    // 获取学生就业信息
+    @GetMapping(value = "jobInformation",produces="application/json;charset=UTF-8")
+    public RestfulJson getJobInformation() {
+
+        return RestfulJson.isOk(userService.getJobInformation());
+    }
+
 
 
 

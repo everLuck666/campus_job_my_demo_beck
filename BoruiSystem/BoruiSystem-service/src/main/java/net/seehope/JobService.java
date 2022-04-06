@@ -16,7 +16,7 @@ public interface JobService {
     void applyJob(String userID, String jobID) throws Exception;
 
     // 通过岗位的审核
-    void verifyJob(String jobID, String status);
+    void verifyJob(String jobID, String status, String userID);
 
     // 查看公司发布的岗位
     List getEnterprisePublishJob(String userID) throws Exception;

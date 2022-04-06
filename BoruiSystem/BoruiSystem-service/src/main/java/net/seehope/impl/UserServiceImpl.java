@@ -348,4 +348,68 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public Map getJobInformation() {
+        Map map = new HashMap();
+
+        Users users = new Users();
+        users.setIdentity(0);
+
+        List<Users> usersList = usersMapper.select(users);
+        map.put("totalNum", usersList.size());
+        int findJobNum = 0;
+        for (int i = 0; i < usersList.size(); i++) {
+            Apply apply = new Apply();
+            apply.setStudentId(usersList.get(i).getUserId());
+
+            List<Apply> applyList = applyMapper.select(apply);
+            for (int j = 0; j < applyList.size(); j++) {
+                if (applyList.get(j).getStatus().equals("3")){
+                    findJobNum++;
+                    break;
+                }
+            }
+        }
+        map.put("findJobNum", findJobNum);
+        List list = new ArrayList();
+
+        Enterprise enterprise = new Enterprise();
+        List<Enterprise> enterpriseList = enterpriseMapper.select(enterprise);
+
+
+
+        for(int i = 0; i < enterpriseList.size(); i++) {
+            Map value = new HashMap();
+            value.put("name", enterpriseList.get(i).getName());
+            value.put("src", enterpriseList.get(i).getImg());
+
+            List myStationList = new ArrayList();
+
+            Station station = new Station();
+            station.setEnterpriseId(enterpriseList.get(i).getId());
+            List<Station> stationList = stationMapper.select(station);
+
+            for(int j = 0; j < stationList.size(); j++) {
+                Map stationMap = new HashMap();
+                stationMap.put("stationName", stationList.get(j).getName());
+                Apply apply = new Apply();
+                apply.setStationId(stationList.get(j).getId());
+                List<Apply> applyList = applyMapper.select(apply);
+                int jobNum = 0;
+                for (int q = 0; q < applyList.size(); q++) {
+                    if (applyList.get(q).getStatus().equals("3")) {
+                        jobNum++;
+                    }
+                }
+                stationMap.put("stationNum", jobNum);
+                myStationList.add(stationMap);
+            }
+            value.put("stationValue", myStationList);
+            list.add(value);
+        }
+        map.put("jobData", list);
+
+        return map;
+    }
+
 }

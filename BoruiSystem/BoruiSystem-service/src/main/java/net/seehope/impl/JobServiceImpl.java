@@ -2,14 +2,8 @@ package net.seehope.impl;
 
 import net.seehope.JobService;
 import net.seehope.common.JobStatus;
-import net.seehope.mapper.ApplyMapper;
-import net.seehope.mapper.EnterpriseMapper;
-import net.seehope.mapper.EnterpriseRelationMapper;
-import net.seehope.mapper.StationMapper;
-import net.seehope.pojo.Apply;
-import net.seehope.pojo.Enterprise;
-import net.seehope.pojo.EnterpriseRelation;
-import net.seehope.pojo.Station;
+import net.seehope.mapper.*;
+import net.seehope.pojo.*;
 import net.seehope.pojo.vo.JobVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +27,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     EnterpriseRelationMapper relationMapper;
+
+    @Autowired
+    SchoolmanagerMapper schoolmanagerMapper;
 
 
     @Override
@@ -105,7 +102,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void verifyJob(String jobID, String status) {
+    public void verifyJob(String jobID, String status, String userID) {
         Station station = new Station();
         station.setId(jobID);
 
@@ -115,6 +112,16 @@ public class JobServiceImpl implements JobService {
             stationValue.setStatus(Integer.parseInt(status));
             stationMapper.insert(stationValue);
         }
+
+        Schoolmanager schoolmanager = new Schoolmanager();
+        schoolmanager.setId(userID);
+
+        Schoolmanager searchManager = schoolmanagerMapper.selectOne(schoolmanager);
+        schoolmanagerMapper.delete(searchManager);
+        searchManager.setJobNum(searchManager.getJobNum()+1);
+        schoolmanagerMapper.insert(searchManager);
+
+
     }
 
     @Override
@@ -143,6 +150,11 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List getJobLike(String search) {
+        if (search.equals("全部城市") || search.equals("全部岗位")) {
+            Station station = new Station();
+            station.setStatus(1);
+            return stationMapper.select(station);
+        }
         Example example = new Example(Station.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.orCondition("address like '%" + search +"%'");
@@ -150,8 +162,16 @@ public class JobServiceImpl implements JobService {
         criteria.orCondition("industry like '%" + search +"%'");
         criteria.orCondition("education like '%" + search +"%'");
 
-        criteria.andCondition("status=1");
+//        criteria.andCondition("status=1");
+//        criteria.andEqualTo("status", "1");
+        List<Station> result = new ArrayList<>();
+       List<Station> stationList =  stationMapper.selectByExample(example);
+        for (int i = 0; i < stationList.size(); i++) {
+            if (stationList.get(i).getStatus() == 1) {
+                result.add(stationList.get(i));
+            }
+        }
 
-        return stationMapper.selectByExample(example);
+        return result;
     }
 }

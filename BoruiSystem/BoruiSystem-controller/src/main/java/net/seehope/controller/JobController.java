@@ -47,9 +47,9 @@ public class JobController {
 
     // 审核岗位
     @PostMapping(value = "verify",produces="application/json;charset=UTF-8")
-    public RestfulJson verifyJob(@RequestBody Map map) {
+    public RestfulJson verifyJob(@RequestBody Map map, HttpServletRequest request) {
 
-        jobService.verifyJob(map.get("jobID").toString(), map.get("status").toString());
+        jobService.verifyJob(map.get("jobID").toString(), map.get("status").toString(), request.getAttribute("userID").toString());
 
         return RestfulJson.isOk("岗位通过审核");
     }
