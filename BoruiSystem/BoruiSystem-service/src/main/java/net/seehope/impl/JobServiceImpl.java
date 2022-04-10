@@ -54,6 +54,7 @@ public class JobServiceImpl implements JobService {
             Enterprise enterpriseValue = enterpriseMapper.selectOne(enterprise);
 
             jobVo.setCompany(enterpriseValue.getName());
+            jobVo.setCompanySrc(enterpriseValue.getImg());
             jobVo.setId(jobInfo.getId());
             jobVo.setAddress(jobInfo.getAddress());
             jobVo.setDemand(jobInfo.getDemand());
@@ -150,6 +151,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List getJobLike(String search) {
+
+        System.out.println("模糊搜索，我搜索的是"+ search);
         if (search.equals("全部城市") || search.equals("全部岗位")) {
             Station station = new Station();
             station.setStatus(1);
@@ -166,12 +169,61 @@ public class JobServiceImpl implements JobService {
 //        criteria.andEqualTo("status", "1");
         List<Station> result = new ArrayList<>();
        List<Station> stationList =  stationMapper.selectByExample(example);
+
+       List<JobVo> jobInfoList = new ArrayList<>();
+
+
+
+
+
         for (int i = 0; i < stationList.size(); i++) {
             if (stationList.get(i).getStatus() == 1) {
                 result.add(stationList.get(i));
             }
         }
 
-        return result;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+
+
+        for(int i = 0; i < result.size(); i++) {
+            Station jobInfo = result.get(i);
+            JobVo jobVo = new JobVo();
+
+            Enterprise enterprise = new Enterprise();
+            enterprise.setId(jobInfo.getEnterpriseId());
+
+            Enterprise enterpriseValue = enterpriseMapper.selectOne(enterprise);
+
+            jobVo.setCompany(enterpriseValue.getName());
+            jobVo.setCompanySrc(enterpriseValue.getImg());
+            jobVo.setId(jobInfo.getId());
+            jobVo.setAddress(jobInfo.getAddress());
+            jobVo.setDemand(jobInfo.getDemand());
+            jobVo.setEducation(jobInfo.getEducation());
+            jobVo.setIndustry(jobInfo.getIndustry());
+            jobVo.setMonth(jobInfo.getMonth());
+            jobVo.setCreateTime(format.format(jobInfo.getCreateTime()));
+            jobVo.setEnterpriseId(jobInfo.getEnterpriseId());
+            jobVo.setNum(jobInfo.getNum());
+            jobVo.setStatus(jobInfo.getStatus());
+            jobVo.setName(jobInfo.getName());
+            jobVo.setResponsibility(jobInfo.getResponsibility());
+            jobVo.setProviderPhone(jobInfo.getProviderPhone());
+
+            jobVo.setSalaryMax(jobInfo.getSalaryMax());
+            jobVo.setSalaryMin(jobInfo.getSalaryMin());
+            jobVo.setWorkBegin(format.format(jobInfo.getWorkBegin()));
+//            jobVo.setWorkEnd(format.format(jobInfo.getWorkEnd()));
+//            jobVo.setUpdateTime(format.format(jobInfo.getUpdateTime()));
+
+            jobVo.setMoney(jobInfo.getSalaryMin() + "-" + jobInfo.getSalaryMax() + "*" + jobInfo.getMonth());
+
+            jobInfoList.add(jobVo);
+        }
+
+
+
+        return jobInfoList;
     }
 }

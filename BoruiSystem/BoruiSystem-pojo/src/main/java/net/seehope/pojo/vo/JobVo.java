@@ -46,6 +46,15 @@ public class JobVo {
 
     private String updateTime;
 
+    private String companySrc;
+
+    public String getCompanySrc() {
+        return companySrc;
+    }
+
+    public void setCompanySrc(String companySrc) {
+        this.companySrc = companySrc;
+    }
 
     public String getName() {
         return name;

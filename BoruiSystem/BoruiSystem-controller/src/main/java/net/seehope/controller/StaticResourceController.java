@@ -123,6 +123,36 @@ public class StaticResourceController {
 
     }
 
+    //上传用户简历
+    @PostMapping(value = "resume",produces="application/json;charset=UTF-8")
+
+    public RestfulJson updateUserResume(HttpServletRequest request) throws Exception {
+
+
+        System.out.println("进入上传文件");
+
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
+
+        String fileName = null;
+        String path = FilePath.pdf;
+
+        fileName = indexService.update(files, path);
+        String[] suffix = fileName.split("\\.");
+
+        if (fileName == null) {
+            throw new Exception("文件没有上传成功");
+        }
+
+        String titleName = request.getAttribute("userID").toString();
+        titleName += ".";
+        titleName += suffix[suffix.length-1];
+
+        indexService.renameTo(fileName,titleName,path);
+
+        return RestfulJson.isOk("上传成功");
+
+    }
+
 
 
 
@@ -250,6 +280,8 @@ public class StaticResourceController {
 
         headers.setContentDispositionFormData("attachment", fileName=java.net.URLEncoder.encode(fileName, "UTF-8"));
         byte[] bytes = FileUtils.readFileToByteArray(zipFile);
+        System.out.println("x下载路径是"+ file.getAbsolutePath()+path+fileName);
+        System.out.println("下载成功");
         return new ResponseEntity<byte[]>(bytes,headers, HttpStatus.CREATED);
     }
 
