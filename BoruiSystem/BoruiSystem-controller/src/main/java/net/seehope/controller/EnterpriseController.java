@@ -45,7 +45,24 @@ public class EnterpriseController {
         return RestfulJson.isOk("成功");
     }
 
+    // 获得邀约用户
+    @PostMapping(value = "jobIntention",produces="application/json;charset=UTF-8")
+    public RestfulJson getJobIntention(@RequestBody Map map, HttpServletRequest request) {
+        return RestfulJson.isOk(enterpriseService.getJobIntention(request.getAttribute("userID").toString(),map.get("search").toString()));
+    }
 
+    // 邀请用户
+    @PostMapping(value = "invite", produces="application/json;charset=UTF-8")
+    public RestfulJson inviteUser(@RequestBody Map map, HttpServletRequest request) throws Exception {
+        enterpriseService.inviteUser(request.getAttribute("userID").toString(), map.get("sno").toString());
+        return RestfulJson.isOk("邀请成功");
+    }
+
+    // 获取接受邀请用户列表
+    @GetMapping(value = "userAcc", produces="application/json;charset=UTF-8")
+    public RestfulJson getUserInviteAcc(HttpServletRequest request) {
+        return RestfulJson.isOk(enterpriseService.getUserInviteAcc(request.getAttribute("userID").toString()));
+    }
 
 
 

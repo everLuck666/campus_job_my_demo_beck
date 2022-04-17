@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.seehope.mapper.CommentMapper">
+
+
+    <select id="getAllComment" resultMap="comment" parameterType="String">
+        select * from comment where post_id=#{postID} ORDER BY create_time DESC
+    </select>
+
+    <resultMap id="comment" type="net.seehope.pojo.Comment">
+        <result column="title" property="title"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="content" property="content"></result>
+        <result column="comment_id" property="commentId"></result>
+        <result column="user_src" property="userSrc"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="post_id" property="postId"></result>
+    </resultMap>
+
+</mapper>

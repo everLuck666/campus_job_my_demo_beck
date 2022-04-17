@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
 @Service
 public class EnterpriseServiceImpl implements EnterpriseService{
     @Autowired
@@ -24,6 +22,9 @@ public class EnterpriseServiceImpl implements EnterpriseService{
     ApplyMapper applyMapper;
     @Autowired
     StudentMapper studentMapper;
+
+    @Autowired
+    IntentionMapper intentionMapper;
 
     @Override
     public void registerEnterpriseInfo(Enterprise enterprise, String userID) throws Exception {
@@ -158,5 +159,104 @@ public class EnterpriseServiceImpl implements EnterpriseService{
         }
         applyMapper.insert(result);
 
+    }
+
+    @Override
+    public List getJobIntention(String userID, String intention) {
+
+
+
+        EnterpriseRelation enterpriseRelation = new EnterpriseRelation();
+        enterpriseRelation.setUserId(userID);
+
+        EnterpriseRelation enResult = enterpriseRelationMapper.selectOne(enterpriseRelation);
+        String enterpriseID = enResult.getEnterpriseId();
+        List<Student> students = null;
+        if (intention.equals("ALL")) {
+            students = studentMapper.selectAll();
+        } else {
+            Student student = new Student();
+            student.setIntention(intention);
+            students = studentMapper.select(student);
+        }
+
+
+        List<Student> users = new ArrayList<>();
+
+        Station station = new Station();
+        station.setEnterpriseId(enterpriseID);
+
+        List<Station> stationList = stationMapper.select(station);
+
+        for (int i = 0; i < students.size(); i++) {
+            boolean flag = false;
+            for(int j = 0; j < stationList.size(); j++) {
+                Apply apply = new Apply();
+                apply.setStudentId(students.get(i).getSno());
+                apply.setStationId(stationList.get(j).getId());
+
+                Apply result = applyMapper.selectOne(apply);
+                if (result != null) {
+                   flag = true;
+                }
+            }
+            if (!flag) {
+                users.add(students.get(i));
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public void inviteUser(String userID, String studentID) throws Exception {
+        EnterpriseRelation enterpriseRelation = new EnterpriseRelation();
+        enterpriseRelation.setUserId(userID);
+
+        EnterpriseRelation enResult = enterpriseRelationMapper.selectOne(enterpriseRelation);
+        String enterpriseID = enResult.getEnterpriseId();
+
+        Intention intention = new Intention();
+        intention.setUserId(studentID);
+        intention.setEnterpirseId(enterpriseID);
+
+        Intention result = intentionMapper.selectOne(intention);
+
+        if (result == null) {
+            intention.setStatus("0");
+            intentionMapper.insert(intention);
+        } else {
+            throw new Exception("请不要重复邀请");
+        }
+
+
+
+    }
+
+    @Override
+    public List getUserInviteAcc(String userID) {
+        List list = new ArrayList();
+
+        EnterpriseRelation enterpriseRelation = new EnterpriseRelation();
+        enterpriseRelation.setUserId(userID);
+        EnterpriseRelation relation = enterpriseRelationMapper.selectOne(enterpriseRelation);
+
+        Intention intention = new Intention();
+        intention.setEnterpirseId(relation.getEnterpriseId());
+        intention.setStatus("1");
+        List<Intention> intentionList = intentionMapper.select(intention);
+
+        System.out.println("企业id是++++++++++");
+
+        for (int i = 0; i < intentionList.size(); i++) {
+            Student student = new Student();
+            student.setSno(intentionList.get(i).getUserId());
+            Student sResult = studentMapper.selectOne(student);
+            Map map = new HashMap();
+            map.put("userName", sResult.getUserName());
+            map.put("userID", sResult.getSno());
+            list.add(map);
+        }
+
+        return list;
     }
 }

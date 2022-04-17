@@ -12,10 +12,7 @@ import java.util.List;
 */
 @Repository
 public interface CommentMapper extends tk.mybatis.mapper.common.Mapper<Comment> {
-
-    // 查询所有的评论
-    List getAllComment(String postID);
-
+  List getAllComment(String postID);
 }
 
 

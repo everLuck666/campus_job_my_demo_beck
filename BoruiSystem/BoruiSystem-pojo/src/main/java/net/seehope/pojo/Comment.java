@@ -9,10 +9,6 @@ public class Comment implements Serializable {
     @Column(name = "`post_id`")
     private String postId;
 
-    @Id
-    @Column(name = "`comment_id`")
-    private String commentId;
-
     @Column(name = "`title`")
     private String title;
 
@@ -28,15 +24,10 @@ public class Comment implements Serializable {
     @Column(name = "`user_src`")
     private String userSrc;
 
+    @Column(name = "`comment_id`")
+    private String commentId;
+
     private static final long serialVersionUID = 1L;
-
-    public String getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
-    }
 
     /**
      * @return post_id
@@ -120,5 +111,19 @@ public class Comment implements Serializable {
      */
     public void setUserSrc(String userSrc) {
         this.userSrc = userSrc;
+    }
+
+    /**
+     * @return comment_id
+     */
+    public String getCommentId() {
+        return commentId;
+    }
+
+    /**
+     * @param commentId
+     */
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 }

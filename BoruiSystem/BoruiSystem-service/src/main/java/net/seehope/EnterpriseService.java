@@ -27,4 +27,13 @@ public interface EnterpriseService {
 
     //处理该候选人在改岗位上的状态
     public void changeJobState(String stationID, String userID, String state);
+
+    // 获取主动邀约用户
+    public List getJobIntention(String userID, String intention);
+
+    // 邀请用户
+    public void inviteUser(String userID, String studentID) throws Exception;
+
+    // 得到邀请成功用户列表
+    public List getUserInviteAcc(String userID);
 }

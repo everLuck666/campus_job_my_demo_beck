@@ -78,6 +78,9 @@ public class Student implements Serializable {
     @Column(name = "`project`")
     private String project;
 
+    @Column(name = "`intention`")
+    private String intention;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -304,5 +307,19 @@ public class Student implements Serializable {
      */
     public void setProject(String project) {
         this.project = project;
+    }
+
+    /**
+     * @return intention
+     */
+    public String getIntention() {
+        return intention;
+    }
+
+    /**
+     * @param intention
+     */
+    public void setIntention(String intention) {
+        this.intention = intention;
     }
 }

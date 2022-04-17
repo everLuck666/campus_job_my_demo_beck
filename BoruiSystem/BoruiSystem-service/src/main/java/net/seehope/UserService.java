@@ -72,6 +72,12 @@ public interface UserService {
     // 得到学生就业数据
     Map getJobInformation();
 
+    // 得到通知信息
+    List getInform(String userID);
+
+    // 用户对于企业邀请的意愿
+    void userIntention(String userID, String enterpriseID, String status);
+
 
 
 }

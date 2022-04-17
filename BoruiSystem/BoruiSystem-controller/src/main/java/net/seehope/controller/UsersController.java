@@ -5,6 +5,7 @@ import net.seehope.OnlineService;
 import net.seehope.UserService;
 import net.seehope.common.RestfulJson;
 import net.seehope.pojo.Comment;
+import net.seehope.pojo.Intention;
 import net.seehope.pojo.Post;
 import net.seehope.pojo.Student;
 import net.seehope.pojo.bo.UserBo;
@@ -141,5 +142,22 @@ public class UsersController {
         userService.postComment(comment);
         return RestfulJson.isOk("成功");
     }
+
+    // 获取通知信息
+    @GetMapping(value = "inform",produces="application/json;charset=UTF-8")
+    public RestfulJson getInform(HttpServletRequest request) {
+
+        return RestfulJson.isOk(userService.getInform(request.getAttribute("userID").toString()));
+
+    }
+
+    // 企业邀请同意或者拒绝
+    @PostMapping(value = "inform",produces="application/json;charset=UTF-8")
+    public RestfulJson userIntention(@RequestBody Map map, HttpServletRequest request) {
+        userService.userIntention(request.getAttribute("userID").toString(), map.get("enterpriseID").toString(), map.get("status").toString());
+        return RestfulJson.isOk("");
+    }
+
+
 
 }

@@ -2,6 +2,7 @@ package net.seehope.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import net.seehope.UserService;
 import net.seehope.common.UserType;
 import net.seehope.exception.PassPortException;
@@ -66,6 +67,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     OnlineMapper onlineMapper;
+
+    @Autowired
+    IntentionMapper intentionMapper;
 
 
     @Override
@@ -410,6 +414,40 @@ public class UserServiceImpl implements UserService {
         map.put("jobData", list);
 
         return map;
+    }
+
+    @Override
+    public List getInform(String userID) {
+        Intention intention = new Intention();
+        intention.setStatus("0");
+        intention.setUserId(userID);
+
+        List<Intention> intentions = intentionMapper.select(intention);
+        List list = new ArrayList();
+
+        for (int i = 0; i < intentions.size(); i++) {
+            Map map = new HashMap();
+            Enterprise enterprise = new Enterprise();
+            enterprise.setId(intentions.get(i).getEnterpirseId());
+            Enterprise result = enterpriseMapper.selectOne(enterprise);
+            map.put("enterpriseName", result.getName());
+            map.put("id", result.getId());
+            list.add(map);
+        }
+
+        return list;
+    }
+
+    @Override
+    public void userIntention(String userID, String enterpriseID, String status) {
+        Intention intention = new Intention();
+        intention.setEnterpirseId(enterpriseID);
+        intention.setUserId(userID);
+
+        Intention result = intentionMapper.selectOne(intention);
+        intentionMapper.delete(result);
+        result.setStatus(status);
+        intentionMapper.insert(result);
     }
 
 }
