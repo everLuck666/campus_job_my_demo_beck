@@ -72,3 +72,9 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     cache-enabled: true
 
+mybatis-plus:
+  mapper-locations: classpath*:mappers/**/*.xml
+  type-aliases-package: net.seehope.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

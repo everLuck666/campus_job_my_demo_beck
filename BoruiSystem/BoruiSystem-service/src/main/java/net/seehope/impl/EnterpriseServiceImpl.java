@@ -197,6 +197,8 @@ public class EnterpriseServiceImpl implements EnterpriseService{
 
                 Apply result = applyMapper.selectOne(apply);
                 if (result != null) {
+                    System.out.println("&&&&&&&&&&&我是true" + students.get(i).getSno());
+                    System.out.println("&&&&&&&&&&&我是true" + stationList.get(j).getId());
                    flag = true;
                 }
             }
@@ -204,6 +206,8 @@ public class EnterpriseServiceImpl implements EnterpriseService{
                 users.add(students.get(i));
             }
         }
+        System.out.println("***********************");
+        System.out.println(users.size());
         return users;
     }
 
