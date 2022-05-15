@@ -71,6 +71,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     IntentionMapper intentionMapper;
 
+    @Autowired
+    EnterpriseRelationMapper enterpriseRelationMapper;
+
 
     @Override
     public Users getUserInfo(String sno, String type) {
@@ -341,7 +344,9 @@ public class UserServiceImpl implements UserService {
 
         Online result = onlineMapper.selectOne(online);
 
-        comment.setUserSrc(result.getOnline());
+        if (result != null) {
+            comment.setUserSrc(result.getOnline());
+        }
 
         Comment cResult = commentMapper.selectOne(comment);
 
@@ -448,6 +453,21 @@ public class UserServiceImpl implements UserService {
         intentionMapper.delete(result);
         result.setStatus(status);
         intentionMapper.insert(result);
+    }
+
+    @Override
+    public String getUserAvatar(String userID) {
+        EnterpriseRelation enterpriseRelation = new EnterpriseRelation();
+        enterpriseRelation.setUserId(userID);
+
+        EnterpriseRelation relation = enterpriseRelationMapper.selectOne(enterpriseRelation);
+
+        Enterprise enterprise = new Enterprise();
+        enterprise.setId(relation.getEnterpriseId());
+
+        Enterprise enterpriseResult = enterpriseMapper.selectOne(enterprise);
+
+        return enterpriseResult.getImg();
     }
 
 }

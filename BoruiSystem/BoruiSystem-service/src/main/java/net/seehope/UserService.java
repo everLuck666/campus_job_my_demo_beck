@@ -78,6 +78,9 @@ public interface UserService {
     // 用户对于企业邀请的意愿
     void userIntention(String userID, String enterpriseID, String status);
 
+    // 得到用户图片
+    String getUserAvatar(String userID);
+
 
 
 }

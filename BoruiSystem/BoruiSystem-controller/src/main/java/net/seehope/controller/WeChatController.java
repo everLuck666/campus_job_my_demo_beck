@@ -23,7 +23,7 @@ public class WeChatController {
     @GetMapping(value = "online/",produces="application/json;charset=UTF-8")
     public RestfulJson updateUserOnlineState(HttpServletRequest request) {
 
-        redisTemplate.opsForValue().set(request.getAttribute("userID").toString(),"登录", 5, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(request.getAttribute("userID").toString(),"登录", 10, TimeUnit.SECONDS);
 
 //        weChatService.updateUserOnlineState(online);
 

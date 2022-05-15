@@ -158,6 +158,10 @@ public class UsersController {
         return RestfulJson.isOk("");
     }
 
+    // 获取用户头像
+    @GetMapping(value = "avatar",produces="application/json;charset=UTF-8")
+    public RestfulJson getUserAvatar(HttpServletRequest request) {
+       return RestfulJson.isOk(userService.getUserAvatar(request.getAttribute("userID").toString()));
 
-
+    }
 }
