@@ -87,6 +87,8 @@ public class UsersController {
             Student student = students.get(i);
             StudentChatVo chatVo = new StudentChatVo();
             chatVo.setSno(student.getSno());
+            chatVo.setGraduate(student.getGraduate());
+            chatVo.setIntention(student.getIntention());
             chatVo.setUserName(student.getUserName());
            String photo =  onlineService.getHeaderPhoto(student.getSno());
            if (photo != null) {

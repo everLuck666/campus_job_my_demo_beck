@@ -5,6 +5,24 @@ public class StudentChatVo {
     private String sno;
     private String userState;
     private String headerPhoto;
+    private String intention;
+    private Short  graduate;
+
+    public Short getGraduate() {
+        return graduate;
+    }
+
+    public void setGraduate(Short graduate) {
+        this.graduate = graduate;
+    }
+
+    public String getIntention() {
+        return intention;
+    }
+
+    public void setIntention(String intention) {
+        this.intention = intention;
+    }
 
     public String getHeaderPhoto() {
         return headerPhoto;

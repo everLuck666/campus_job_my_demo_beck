@@ -14,7 +14,7 @@ public class JWTUtils {
     private static final String SING = "12@$5767@*654)866--++87";
     public static String getToken(Map<String,String> map){
         Calendar instance = Calendar.getInstance();
-        instance.add(Calendar.MINUTE,30);//设置30分钟才过期
+        instance.add(Calendar.MINUTE,300);//设置30分钟才过期
 
         JWTCreator.Builder builder = JWT.create();
 
